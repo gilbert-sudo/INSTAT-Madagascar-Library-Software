@@ -11,3 +11,5 @@ alert("bonjour");
 </script>';
 ?>
 
+// <span style="text-decoration:line-through;"> RS'.$row["MRP"].'</span> 
+                                    // | '.$row["Discount"].'% discount

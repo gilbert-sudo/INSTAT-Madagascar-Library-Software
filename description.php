@@ -89,7 +89,7 @@ echo '
   <div class="container-fluid" id="books">
     <div class="row">
       <div class="col-sm-10 col-md-6">
-                          <div class="tag">'.$row["Discount"].'%OFF</div>
+                          <div class="tag">Wrote by '.$row["Author"].'</div>
                               <div class="tag-side"><img src="img/orange-flag.png">
                           </div>
                          <img class="center-block img-responsive" src="'.$path.'" height="550px" style="padding:20px;">
@@ -100,16 +100,11 @@ echo '
                                  #'.$row["Author"].'&nbsp &nbsp #'.$row["Publisher"].'
                                 </span>
         <hr>            
-                                <span style="font-weight:bold;"> Quantity : </span>';
-                                echo'<select id="quantity">';
-                                   for($i=1;$i<=$row['Available'];$i++)
-                                       echo '<option value="'.$i.'">'.$i.'</option>';
-                               echo ' </select>';
+                                <span style="font-weight:bold;"> Language : '.$row["Language"].' </span> ';
+                                
 echo'                           <br><br><br>
                                 <a id="buyLink" href="'.$target.'" class="btn btn-lg btn-danger" style="padding:15px;color:white;text-decoration:none;"> 
-                                    DOWNLOAD for Rs '.$row["Price"] .' <br>
-                                    <span style="text-decoration:line-through;"> RS'.$row["MRP"].'</span> 
-                                    | '.$row["Discount"].'% discount
+                                    DOWNLOAD for free<br>
                                  </a> 
 
       </div>

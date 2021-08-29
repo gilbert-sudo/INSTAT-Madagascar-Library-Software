@@ -50,8 +50,8 @@ if(!isset($_SESSION['user']))
                   if(isset($_SESSION['user']))
                     {
                       echo'
-                    <li><a href="cart.php" class="btn btn-md"><span class="glyphicon glyphicon-shopping-cart">Cart</span></a></li>
-                    <li><a href="destroy.php" class="btn btn-md"> <span class="glyphicon glyphicon-log-out">LogOut</span></a></li>
+                    <li><a href="cart.php" class="btn btn-md"><span class="glyphicon glyphicon-heart">Favoris</span></a></li>
+                    <li><a href="destroy.php" class="btn btn-md"> <span class="glyphicon glyphicon-log-out">Se déconnecter</span></a></li>
                          ';
                     }
                ?>

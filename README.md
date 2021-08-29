@@ -1,5 +1,5 @@
 # BookStore:
-A responsive website that displays available books in the store, along with their details.Website provides options such as browsing books based on categories or authors, searching the required book, viewing full description page of any book. It is also possible to sort the listing based on price or discount. User can register and login on subsequent accesses, view his/her cart, buy desired books. In case of any problem user can ask query which is directly sent as a mail to admin.
+A responsive Desktop App that displays available books in the Instat Madagascar store, along with their details.App provides options such as browsing books based on categories or authors, searching the required book, viewing full description page of any book. It is also possible to read the book. User can register and login on subsequent accesses, view his/her favorites books.the user can perform an update when he is connected.
 
 ##Screenshots:
 <p>

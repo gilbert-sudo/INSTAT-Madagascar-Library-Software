@@ -2,18 +2,6 @@
 session_start();
 include "dbconnect.php";
 
-if (isset($_GET['Message'])) {
-    echo '<script type="text/javascript">
-               alert("' . $_GET['Message'] . '");
-           </script>';
-}
-
-if (isset($_GET['response'])) {
-    print '<script type="text/javascript">
-               alert("' . $_GET['response'] . '");
-           </script>';
-}
-
 if(isset($_POST['submit']))
 {
   if($_POST['submit']=="login")
@@ -26,9 +14,6 @@ if(isset($_POST['submit']))
         {
              $row = mysqli_fetch_assoc($result);
              $_SESSION['user']=$row['UserName'];
-             print'
-                <script type="text/javascript">alert("successfully logged in!!!");</script>
-                  ';
         }
         else
         {    print'
@@ -77,6 +62,8 @@ if(isset($_POST['submit']))
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/my.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/sweetalert.min.css">
+    
     <style>
       .modal-header {background:#2f4a5d;border:0.1px solid #8CA0AD;color:#fff;font-weight:800;}
       .modal-body{font-weight:800;}
@@ -85,7 +72,7 @@ if(isset($_POST['submit']))
       .modal a{color:#D67B22;}
       .modal-backdrop {position:inherit !important;}
        #login_button,#register_button{background:none;color:#ffffff!important;}       
-       #query_button {position:fixed;right:0px;bottom:0px;padding:10px 80px;
+       #query_button {position:fixed;right:0px;bottom:0px;padding:10px 40px;margin-right: 10px;
                       background-color:#2f4a5d;color:#fff;border-color:#ffffff;border-radius:2px;}
   	@media(max-width:767px){
         #query_button {padding: 5px 20px;}
@@ -125,12 +112,12 @@ if(isset($_POST['submit']))
                             <div class="modal-body">
                                           <form class="form" role="form" method="post" action="index.php" accept-charset="UTF-8">
                                               <div class="form-group">
-                                                  <label class="sr-only" for="username">Username</label>
-                                                  <input type="text" name="login_username" class="form-control" placeholder="Username" required>
+                                                  <label class="sr-only" for="username">Nom d\utilisateur</label>
+                                                  <input type="text" name="login_username" class="form-control" placeholder="Nom d\'utilisateur" required>
                                               </div>
                                               <div class="form-group">
-                                                  <label class="sr-only" for="password">Password</label>
-                                                  <input type="password" name="login_password" class="form-control"  placeholder="Password" required>
+                                                  <label class="sr-only" for="password">Mot de passe</label>
+                                                  <input type="password" name="login_password" class="form-control"  placeholder="Mot de passe" required>
                                               </div>
                                               <div class="form-group">
                                                   <button type="submit" name="submit" value="login" class="btn btn-block">
@@ -140,7 +127,7 @@ if(isset($_POST['submit']))
                                           </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal" style="background-color:#BF0000;">Close</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal" style="background-color:#BF0000;">Fermer</button>
                             </div>
                         </div>
                     </div>
@@ -158,12 +145,12 @@ if(isset($_POST['submit']))
                           <div class="modal-body">
                                         <form class="form" role="form" method="post" action="index.php" accept-charset="UTF-8">
                                             <div class="form-group">
-                                                <label class="sr-only" for="username">Username</label>
-                                                <input type="text" name="register_username" class="form-control" placeholder="Username" required>
+                                                <label class="sr-only" for="username">Nom d\utilisateur</label>
+                                                <input type="text" name="register_username" class="form-control" placeholder="Nom d\'utilisateur" required>
                                             </div>
                                             <div class="form-group">
-                                                <label class="sr-only" for="password">Password</label>
-                                                <input type="password" name="register_password" class="form-control"  placeholder="Password" required>
+                                                <label class="sr-only" for="password">Mot de passe</label>
+                                                <input type="password" name="register_password" class="form-control"  placeholder="Mot de passe" required>
                                             </div>
                                             <div class="form-group">
                                                 <button type="submit" name="submit" value="register" class="btn btn-block">
@@ -173,7 +160,7 @@ if(isset($_POST['submit']))
                                         </form>
                           </div>
                           <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal" style="background-color:#BF0000;">Close</button>
+                              <button type="button" class="btn btn-default" data-dismiss="modal" style="background-color:#BF0000;">Fermer</button>
                           </div>
                       </div>
                   </div>
@@ -181,9 +168,9 @@ if(isset($_POST['submit']))
             </li>';
           } 
         else
-          {   echo' <li> <a href="#" class="btn btn-lg"> Hello ' .$_SESSION['user']. '.</a></li>
-                    <li> <a href="cart.php" class="btn btn-lg"> Cart </a> </li>; 
-                    <li> <a href="destroy.php" class="btn btn-lg"> LogOut </a> </li>';
+          {   echo' <li> <a href="#" class="btn btn-lg"> Bonjour ' .strtoupper($_SESSION['user']). '.</a></li>
+                    <li> <a href="cart.php" class="btn btn-lg"><span class="glyphicon glyphicon-heart"></span> Mes favoris </a> </li>; 
+                    <li> <a href="destroy.php" class="btn btn-lg"><span class="glyphicon glyphicon-log-out"></span> Déconnecter </a> </li>';
                
           }
 ?>
@@ -196,7 +183,7 @@ if(isset($_POST['submit']))
       <div id="searchbox" class="container-fluid" style="width:112%;margin-left:-6%;margin-right:-6%;">
           <div>
               <form role="search" method="POST" action="Result.php">
-                  <input type="text" class="form-control" name="keyword" style="width:80%;margin:20px 10% 20px 10%;" placeholder="Search for a Book , Author Or Category">
+                  <input type="text" class="form-control" name="keyword" style="width:80%;margin:20px 10% 20px 10%;" placeholder="Rechercher un livre, un auteur ou une catégorie">
               </form>
           </div>
       </div>
@@ -204,7 +191,7 @@ if(isset($_POST['submit']))
       <div class="container-fluid" id="header">
           <div class="row">
               <div class="col-md-3 col-lg-3" id="category">
-                  <div style="background:#5F6C75;color:#fff;font-weight:800;border:none;padding:15px;"> The Book Shop </div>
+                  <div style="background:#5F6C75;color:#fff;font-weight:800;border:none;padding:15px;"> Tous les catégories </div>
                   <ul>
                       <li> <a href="Product.php?value=entrance%20exam"> Entrance Exam </a> </li>
                       <li> <a href="Product.php?value=Literature%20and%20Fiction"> Literature & Fiction </a> </li>
@@ -269,7 +256,28 @@ if(isset($_POST['submit']))
   <div class="container-fluid text-center" id="new">
       <div class="row">
           <div class="col-sm-6 col-md-3 col-lg-3">
-           <a href="description.php?ID=NEW-1&category=new">
+            <?php
+            if (isset($_SESSION['user'])) {
+              $name = $_SESSION['user'];
+            }else{
+              $name=0;
+            }
+                
+            ?>
+           <a href="<?php if(isset($_SESSION['user'])){echo "description.php?ID=NEW-1&category=new";}else{echo"#";}?>" onclick='var x = "<?php echo"$name"?>";
+                      if (x!=0) {
+                      consol.log(x);
+                      }else{
+                          swal({
+                            title: "Connectez-vous ou inscrivez, ça se fera hors connexion",
+                            text: "I will close in 10 seconds.",
+                            timer: 10000,
+                            button: false
+                            });
+                      }
+                      
+                 
+                    ';>
               <div class="book-block">
                   <div class="tag">New</div>
                   <div class="tag-side"><img src="img/tag.png"></div>
@@ -283,7 +291,7 @@ if(isset($_POST['submit']))
             </a>
           </div>
           <div class="col-sm-6 col-md-3 col-lg-3">
-           <a href="description.php?ID=NEW-2&category=new">
+           <a href="read.php?name=arduino235.pdf">
               <div class="book-block">
                   <div class="tag">New</div>
                   <div class="tag-side"><img src="img/tag.png"></div>
@@ -409,7 +417,8 @@ if(isset($_POST['submit']))
 
 <div class="container">
   <!-- Trigger the modal with a button -->
-  <button type="button" id="query_button" class="btn btn-lg" data-toggle="modal" data-target="#query">Mettre à jour</button>
+  <button type="button" id="query_button" class="btn btn-lg" data-toggle="modal" data-target="#query"><?php require 'online.php'; ?></button>
+
   <!-- Modal -->
   <div class="modal fade" id="query" role="dialog">
     <div class="modal-dialog">
@@ -452,5 +461,8 @@ if(isset($_POST['submit']))
 
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="js/bootstrap.min.js"></script>
+
+  <!-- pop up -->
+  <script src="js/sweetalert.min.js"></script>
 </body>
 </html>	

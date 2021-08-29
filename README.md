@@ -14,11 +14,7 @@ A responsive Desktop App that displays available books at Instat Madagascar stor
   <kbd><img src="screenshot/description.png" width="350" height="450"/></kbd>
 </p>
 
-<p>
-  <kbd><img src="screenshot/cart.png" width="350" height="250"/></kbd>
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-  <kbd><img src="screenshot/query.png" width="350" height="250"/></kbd>
-</p>
+
 
 
 ###Website Link :

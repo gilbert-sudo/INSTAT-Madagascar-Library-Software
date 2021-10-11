@@ -158,7 +158,7 @@
 	            </li>';
 	          } 
 	        else
-	            echo' <li> <a href="destroy.php" class="btn btn-lg"> LogOut </a> </li>';
+	            echo' <li> <a href="destroy.php" class="btn btn-lg"> Déconnecter </a> </li>';
 	        ?>
 
         </ul>
@@ -169,7 +169,7 @@
       <div id="searchbox" class="container-fluid" style="width:112%;margin-left:-6%;margin-right:-6%;">
           <div>
               <form role="search" method="POST" action="Result.php">
-                  <input type="text" class="form-control" name="keyword" style="width:80%;margin:20px 10% 20px 10%;" placeholder="Search for a Book , Author Or Category">
+                  <input type="text" class="form-control" name="keyword" style="width:80%;margin:20px 10% 20px 10%;" placeholder="Rechercher un livre, un auteur ou une catégorie">
               </form>
           </div>
       </div>
@@ -180,7 +180,7 @@
 echo '<div class="container-fluid" id="cart">
       <div class="row">
           <div class="col-xs-12 text-center" id="heading">
-                 <h2 style="color:#D67B22;text-transform:uppercase;">  YOUR CART </h2>
+                 <h2 style="color:#D67B22;text-transform:uppercase;">  VOS FAVORIS </h2>
            </div>
         </div>';
 	if(isset($_SESSION['user']))
@@ -269,12 +269,12 @@ echo '<div class="container-fluid" id="cart">
                         echo ' 
                          <div class="row">
                             <div class="col-xs-9 col-xs-offset-3 col-sm-4 col-sm-offset-5 col-md-4 col-md-offset-5">
-                                 <span class="text-center" style="color:#D67B22;font-weight:bold;">&nbsp &nbsp &nbsp &nbspCart Is Empty</span>
+                                 <span class="text-center" style="color:#D67B22;font-weight:bold;">&nbsp &nbsp &nbsp &nbspFavoris encore vide</span>
                              </div>
                          </div>
                          <div class="row">
                              <div class="col-xs-9 col-xs-offset-3 col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-5">
-                                  <a href="index.php" class="btn btn-lg" style="background:#D67B22;color:white;font-weight:800;">Do Some Shopping</a>
+                                  <a href="index.php" class="btn btn-lg" style="background:#D67B22;color:white;font-weight:800;">Chercher des livres</a>
                              </div>
                           </div>';
                      }               

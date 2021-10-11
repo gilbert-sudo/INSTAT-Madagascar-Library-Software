@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "dbconnect.php";
+$numRows=0;
 
 if(isset($_POST['submit']))
 {
@@ -8,12 +9,16 @@ if(isset($_POST['submit']))
   { 
         $username=$_POST['login_username'];
         $password=$_POST['login_password'];
-        $query = "SELECT * from users where UserName ='$username' AND Password='$password'";
-        $result = mysqli_query($con,$query)or die(mysql_error());
-        if(mysqli_num_rows($result) > 0)
-        {
-             $row = mysqli_fetch_assoc($result);
-             $_SESSION['user']=$row['UserName'];
+        $query = "SELECT * from users where UserName = :username AND Password = :password";
+        $result = $db->prepare($query);
+        $result->bindValue(':username', $username);
+        $result->bindValue(':password', $password);
+        $result->execute();
+        while ($row = $result->fetch(SQLITE3_ASSOC)) {
+            ++$numRows;
+        }
+        if ($numRows == 1) {
+          $_SESSION['user']=$username;
         }
         else
         {    print'
@@ -169,8 +174,8 @@ if(isset($_POST['submit']))
           } 
         else
           {   echo' <li> <a href="#" class="btn btn-lg"> Bonjour ' .strtoupper($_SESSION['user']). '.</a></li>
-                    <li> <a href="cart.php" class="btn btn-lg"><span class="glyphicon glyphicon-heart"></span> Mes favoris </a> </li>; 
-                    <li> <a href="destroy.php" class="btn btn-lg"><span class="glyphicon glyphicon-log-out"></span> Déconnecter </a> </li>';
+                    <li> <a href="cart.php" class="btn btn-lg">Mes favoris </a> </li>; 
+                    <li> <a href="destroy.php" class="btn btn-lg">Déconnecter </a> </li>';
                
           }
 ?>
@@ -264,7 +269,7 @@ if(isset($_POST['submit']))
             }
                 
             ?>
-           <a href="<?php if(isset($_SESSION['user'])){echo "description.php?ID=NEW-1&category=new";}else{echo"#";}?>" onclick='var x = "<?php echo"$name"?>";
+           <a href="<?php if(isset($_SESSION['user'])){echo "description.php?ID=NEW-1&category=new&pdf=2018 Population RG RGPH3 T 01 - INSTAT";}else{echo"#";}?>" onclick='var x = "<?php echo"$name"?>";
                       if (x!=0) {
                       consol.log(x);
                       }else{
@@ -283,24 +288,34 @@ if(isset($_POST['submit']))
                   <div class="tag-side"><img src="img/tag.png"></div>
                   <img class="book block-center img-responsive" src="img/new/1.jpg">
                   <hr>
-                  Like A Love Song <br>
-                  Rs 113  &nbsp
-                  <span style="text-decoration:line-through;color:#828282;"> 175 </span>
-                  <span class="label label-warning">35%</span>
+                  TROISIEME RECENSEMENT GENERAL DE LA POPULATION ET DE L’HABITATION 
+                  <br>
               </div>
             </a>
           </div>
           <div class="col-sm-6 col-md-3 col-lg-3">
-           <a href="read.php?name=arduino235.pdf">
+              <a href="<?php if(isset($_SESSION['user'])){echo "description.php?ID=NEW-2&category=new&pdf=6eRNDH light2";}else{echo"#";}?>" onclick='var x = "<?php echo"$name"?>";
+                      if (x!=0) {
+                      consol.log(x);
+                      }else{
+                          swal({
+                            title: "Connectez-vous ou inscrivez, ça se fera hors connexion",
+                            text: "I will close in 10 seconds.",
+                            timer: 10000,
+                            button: false
+                            });
+                      }
+                      
+                 
+                    ';>
               <div class="book-block">
                   <div class="tag">New</div>
                   <div class="tag-side"><img src="img/tag.png"></div>
                   <img class="block-center img-responsive" src="img/new/2.jpg">
                   <hr>
-                  General Knowledge 2017  <br>
-                  Rs 68 &nbsp
-                  <span style="text-decoration:line-through;color:#828282;"> 120 </span>
-                  <span class="label label-warning">43%</span>
+                  <?php $affichage = strtoupper("Developpement humain et mobilisation des ressources intérieures"); 
+                  echo $affichage;?>
+                   <br>
               </div>
             </a>
           </div>
@@ -312,9 +327,6 @@ if(isset($_POST['submit']))
                   <img class="block-center img-responsive" src="img/new/3.png">
                   <hr>
                   Indian Family Bussiness Mantras <br>
-                  Rs 400 &nbsp
-                  <span style="text-decoration:line-through;color:#828282;"> 595 </span>
-                  <span class="label label-warning">33%</span>
               </div>
             </a>
           </div>
@@ -326,9 +338,6 @@ if(isset($_POST['submit']))
                   <img class="block-center img-responsive" src="img/new/4.jpg">
                   <hr>
                   Kiran s SSC Mathematics Chapterwise Solutions <br>
-                  Rs 289 &nbsp
-                  <span style="text-decoration:line-through;color:#828282;"> 435 </span>
-                  <span class="label label-warning">33%</span>
               </div>
             </a>
           </div>
@@ -336,7 +345,7 @@ if(isset($_POST['submit']))
   </div>
 
   <div class="container-fluid" id="author">
-      <h3 style="color:#D67B22;"> POPULAR AUTHORS </h3>
+      <h3 style="color:#D67B22;"> AUTEURS POPULAIRES </h3>
       <div class="row">
           <div class="col-sm-5 col-md-3 col-lg-3">
               <a href="Author.php?value=Durjoy%20Datta"><img class="img-responsive center-block" src="img/popular-author/0.jpg"></a>
@@ -374,25 +383,25 @@ if(isset($_POST['submit']))
               </div>
               <div class="col-sm-7 col-md-5 col-lg-5">
                   <div class="row text-center">
-                      <h2>Let's Get In Touch!</h2>
+                      <h2>Entrons en contact !</h2>
                       <hr class="primary">
-                      <p>Still Confused? Give us a call or send us an email and we will get back to you as soon as possible!</p>
+                      <p>Encore confus? Appelez-nous ou envoyez-nous un e-mail et nous vous répondrons dans les plus brefs délais !</p>
                   </div>
                   <div class="row">
                       <div class="col-md-6 text-center">
                           <span class="glyphicon glyphicon-earphone"></span>
-                          <p>123-456-6789</p>
+                          <p>0345511234</p>
                       </div>
                       <div class="col-md-6 text-center">
                           <span class="glyphicon glyphicon-envelope"></span>
-                          <p>BookStore@gmail.com</p>
+                          <p>Instat@gmail.com</p>
                       </div>
                   </div>
               </div>
               <div class="hidden-sm-down col-md-2 col-lg-2">
               </div>
               <div class="col-sm-4 col-md-3 col-lg-3 text-center">
-                  <h2 style="color:#D67B22;">Follow Us At</h2>
+                  <h2 style="color:#D67B22;">Suivez-nous sur</h2>
                   <div>
                       <a href="https://twitter.com/strandbookstore">
                       <img title="Twitter" alt="Twitter" src="img/social/twitter.png" width="35" height="35" />
@@ -425,13 +434,13 @@ if(isset($_POST['submit']))
       <div class="modal-content">
           <div class="modal-header text-center">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Ask your query here</h4>
+            <h4 class="modal-title">Posez votre question ici</h4>
           </div>
           <div class="modal-body">           
                     <form method="post" action="query.php" class="form" role="form">
                         <div class="form-group">
-                             <label class="sr-only" for="name">Name</label>
-                             <input type="text" class="form-control"  placeholder="Your Name" name="sender" required>
+                             <label class="sr-only" for="name">Nom</label>
+                             <input type="text" class="form-control"  placeholder="Your Nom" name="sender" required>
                         </div>
                         <div class="form-group">
                              <label class="sr-only" for="email">Email</label>
@@ -443,13 +452,13 @@ if(isset($_POST['submit']))
                         </div>
                         <div class="form-group">
                               <button type="submit" name="submit" value="query" class="btn btn-block">
-                                                              Send Query
+                                                              Envoyer une requête
                                </button>
                         </div>
                     </form>
           </div>
           <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal" style="background-color:#BF0000;">Fermer</button>
           </div>
       </div>
     </div>  

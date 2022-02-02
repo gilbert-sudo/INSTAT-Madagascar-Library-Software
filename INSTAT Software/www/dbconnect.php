@@ -23,4 +23,8 @@ function fetchdata()
     $data = json_decode($data);
     return $data;
 }
-
+function octetIntoMo($number)
+{
+    $number = $number / 1024 / 1024;
+    return $number;
+}

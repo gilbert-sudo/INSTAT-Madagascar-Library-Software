@@ -64,7 +64,7 @@ if (isset($_GET['id']) && isset($_GET['pdf'])) {
                 </div>
             </div>
         </div>
-        <h3 style="color: white;margin-left: -33%;margin-top: 20%; position: absolute;width: max-content;">Progréssion : <countdown id="count">0</countdown>%...</h3>
+        <h3 style="color: white;margin-left: -33%;margin-top: 20%; position: absolute;width: max-content;">Progréssion : <error id="error"><countdown id="count">0</countdown>%...</error></h3>
     </div>
     <script>
         var timeleft = 100;
@@ -86,7 +86,27 @@ if (isset($_GET['id']) && isset($_GET['pdf'])) {
     <script type='text/javascript' src='js/bootstrap.bundle.min.js'></script>
     <!-- download the PDF file-->
     <script>
+        var id = <?= $id ?>;
         var downloadUrl = 'download.php?name=<?= $pdf ?>&id=<?= $id ?>';
+
+async function getCofirmNet() {
+    return (await fetch("check_internet.php")).json();
+}
+
+setInterval(async () => {
+    let response = [];
+    try {
+        response = await getCofirmNet();
+    } catch (e) {
+        response = "failed";
+    }
+    if (response == "failed") {
+        console.log("Error!");
+        document.getElementById("error").innerHTML = "Error!...";
+        window.location.href = "description.php?error=1&ID=" + id;
+    } 
+       
+}, 1000);
     </script>
     <script type='text/javascript' src='js/download.js'></script>
 

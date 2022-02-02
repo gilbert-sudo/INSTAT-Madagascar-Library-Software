@@ -193,7 +193,7 @@ if (isset($_GET['updates'])) {
 
             <a href="description.php?ID=<?= $new['PID'] ?>">
               <div class="book-block">
-                <div class="tag">New</div>
+                <div class="tag">Top</div>
                 <div class="tag-side"><img src="img/tag.png"></div>
                 <div class="img" style="min-height:380px;">
                   <img class="book block-center img-responsive" src="img/books/<?= $new['img'] ?>">

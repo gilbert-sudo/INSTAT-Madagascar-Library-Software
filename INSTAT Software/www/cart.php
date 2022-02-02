@@ -97,7 +97,7 @@ if (isset($_GET['remove'])) {
         echo '<div class="container-fluid" id="cart">
       <div class="row">
           <div class="col-xs-12 text-center" id="heading">
-                 <h2 style="color:#2f4a5d;text-transform:uppercase;">  VOS FAVORIS </h2>
+                 <h2 style="color:#2f4a5d;text-transform:uppercase;">  VOS LIVRES FAVORIS </h2>
            </div>
         </div>';
         if (isset($_GET['ID'])) {
@@ -139,7 +139,7 @@ if (isset($_GET['remove'])) {
                         <div class="panel-heading">#<?= $i ?>
                         </div>
                         <div class="panel-body">
-                            <a id="buyLink" href="read.php?name=<?= $row['pdf'] ?>" target="__BLANK">
+                            <a id="buyLink" href="description.php?ID=<?= $row['PID'] ?>">
                                 <img class="image-responsive block-center" src="<?= $path ?>" style="height :250px;"> <br>
                             </a>
                             <?= $row['Title'] ?> <br>

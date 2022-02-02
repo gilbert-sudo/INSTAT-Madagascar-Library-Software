@@ -79,18 +79,17 @@ session_start();
             echo '<div class="container-fluid" id="books">
                 <div class="row">
                   <div class="col-xs-12 text-center" id="heading">
-                         <h4 style="color:#00B9F5;text-transform:uppercase;"> found  ' . 1 . ' records </h4>
+                         <h4 style="color:#00B9F5;text-transform:uppercase;"> ' . 1 . ' livres corréspondent </h4>
                    </div>
                 </div>';
 
             foreach ($result as $row) {
-                $path = "img/books/" . $row['PID'] . ".jpg";
+                $path = "img/books/".$row['img'];
                 $description = "description.php?ID=" . $row["PID"];
                 if ($i % 3 == 0)  $offset = 0;
                 else  $offset = 1;
                 if ($i % 3 == 0)
-                    echo '<div class="row">';
-                echo '
+                echo '<div class="row">
                        <a href="' . $description . '">
                         <div class="col-sm-5 col-sm-offset-1 col-md-3 col-md-offset-' . $offset . ' col-lg-3 text-center w3-card-8 w3-dark-grey">
                             <div class="book-block">

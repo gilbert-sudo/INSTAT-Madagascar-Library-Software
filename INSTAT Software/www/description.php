@@ -117,7 +117,29 @@
   <?php
   include "dbconnect.php";
   $PID = $_GET['ID'];
-  $sql = "SELECT * FROM favori WHERE ID = '$PID'";
+  if (isset($_GET['error'])) {
+    echo "<div class='alert alert-danger' role='alert'>
+    <strong>Erreur!</strong> Vous devez être connecté pour télécharger un livre.
+  </div>";
+  $error = $_GET['error'];
+  } else {
+    $error = "";
+  }
+  if (isset($_GET['success']) && $_GET['success'] == 1) {  
+    echo "<div class='alert alert-success' role='alert'>";
+    echo "<strong>Succès!</strong> Le livre a été ajouté parmi vos favoris.";
+    echo "</div>";
+  } 
+  if (isset($_GET['success']) && $_GET['success'] == 2) {  
+    echo "<div class='alert alert-success' role='alert'>";
+    echo "<strong>Succès!</strong> Le livre a bien été télécharger.";
+    echo "</div>";
+  } 
+  $sql = "SELECT * FROM favori WHERE Product = '$PID'";
+  $isFavori = $db->prepare($sql);
+  $isFavori->execute();
+  $isFavori = $isFavori->fetch();
+ 
   $result = $db->prepare("SELECT * FROM products WHERE PID = '$PID'");
   $result->execute();
   $numRows = 0;
@@ -134,12 +156,13 @@
       $day_date = $date['day'];
       $month_date = $date['month'];
       $year_date = $date['year'];
-
+      $size = $row["Author"];
+      $size = octetIntoMo($size);
       echo '
-  <div class="container-fluid" id="books" style="margin-top:20px;">
+      <div class="container-fluid" id="books" style="margin-top:20px;">
     <div class="row">
       <div class="col-sm-10 col-md-5">
-                          <div class="tag">Ecrit par ' . $row["Author"] . '</div>
+                          <div class="tag">#' . $row["Author"] . '</div>
                               <div class="tag-side"><img src="img/orange-flag.png">
                           </div>
                          <img class="center-block img-responsive" src="' . $path . '"  style="padding:20px; height:450px">
@@ -155,15 +178,20 @@
 
       $pdf = $row['pdf'];
       $file_exists = file_exists("books/$pdf");
-      if ($file_exists) { ?>
+      if ($file_exists == true && $error != 1) { ?>
         <br><br><br>
-        <a onclick="NewTab();" id="buyLink" href="read.php?name=<?=$row['pdf']?>" target="__BLANK" class="btn btn-lg btn-danger" style="min-width: 100px; padding:15px;color:white;text-decoration:none;">
+        <a onclick="NewTab();" id="buyLink" href="read.php?name=<?= $row['pdf'] ?>" target="__BLANK" class="btn btn-lg btn-danger" style="min-width: 100px; padding:15px;color:white;text-decoration:none;">
           Lire<br>
         </a>
-        <a id="buyLink" href="cart.php?ID=<?=$PID?>&quantity=1" class="btn btn-lg btn-danger" style="min-width: 100px; padding:15px;color:white;text-decoration:none;">
+        <?php if(!$isFavori){?>
+        <a id="buyLink" href="add-to-favorite.php?ID=<?= $PID ?>&quantity=1" class="btn btn-lg btn-danger" style="min-width: 100px; padding:15px;color:white;text-decoration:none;">
           Ajouter aux favoris<br>
-
         </a>
+        <?php } else { ?>
+          <a href="cart.php" class="btn btn-lg btn-success" style="min-width: 100px; padding:15px;color:white;text-decoration:none;">
+            Parmi vos favoris  ❤ <br>
+          </a>
+        <?php } ?>
 
         </div>
         </div>
@@ -171,8 +199,8 @@
 
       <?php  } else { ?>
         <br><br><br>
-        <a id="downloadLink" href="downloading.php?pdf=<?=$row['pdf']?>&id=<?=$PID?>" class="btn btn-lg btn-danger" style="padding:15px;color:white;text-decoration:none;">
-          Télécharger<br>
+        <a id="downloadLink" href="#" class="btn btn-lg btn-danger" style="padding:15px;color:white;text-decoration:none;" disabled>
+          Télécharger (<?= number_format($size, 2, '.', ''); ?>Mo)<br>
         </a>
 
         </div>
@@ -198,9 +226,9 @@
                   <td> &nbsp;&nbsp;<?= $row["Title"] ?></td>
                 </tr>
                 <tr>
-                  <td><strong>Auteur</strong> </td>
+                  <td><strong>Taille</strong> </td>
                   <td>:</td>
-                  <td>&nbsp;&nbsp;<?= $row["Author"] ?></td>
+                  <td>&nbsp;&nbsp;<?= number_format($size, 2, '.', ''); ?>Mo</td>
                 </tr>
                 <tr>
                   <td><strong>Langue</strong> </td>
@@ -236,6 +264,11 @@
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="js/jquery.min.js"></script>
+  <!-- get js functions-->
+  <script>
+    var download = "downloading.php?pdf=<?= $row['pdf'] ?>&id=<?= $PID ?>";
+  </script>
+  <script src="js/check_connection.js"></script>
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="js/bootstrap.min.js"></script>
   <!-- get js functions-->
@@ -243,9 +276,6 @@
   <!-- get js functions-->
   <script src="js/update.js"></script>
   <!-- download the PDF file-->
-  <script>
-    var downloadUrl = 'download.php?name=<?=$row['pdf']?>&id=<?=$PID?>';
-  </script>
 
 </body>
 

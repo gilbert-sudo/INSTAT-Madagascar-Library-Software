@@ -151,39 +151,31 @@ if (isset($_GET['updates'])) {
 
             <!-- Wrapper for slides -->
             <div class="carousel-inner" role="listbox">
-              <div class="item active">
-                <img class="img-responsive" src="img/carousel/1.jpg">
-              </div>>
-
-              <div class="item">
-                <img class="img-responsive " src="img/carousel/2.jpg">
-              </div>
-
-              <div class="item">
-                <img class="img-responsive" src="img/carousel/3.jpg">
-              </div>
-
-              <div class="item">
-                <img class="img-responsive" src="img/carousel/4.jpg">
-              </div>
-
-              <div class="item">
-                <img class="img-responsive" src="img/carousel/5.jpg">
-              </div>
-
-              <div class="item">
-                <img class="img-responsive" src="img/carousel/6.jpg">
-              </div>
+              <?php
+              $fetch_carousel = file_get_contents('carousel.json');
+              $carousel = json_decode($fetch_carousel, true);
+              $i = 0;
+              foreach ($carousel as $carousel_item) :
+                $i++;
+                if ($i == 1) {
+                  echo '<div class="item active">';
+                } else {
+                  echo '<div class="item">';
+                }
+              ?>
+                <img class="img-responsive" src="img/carousel/<?= $carousel_item['img'] ?>">
             </div>
+          <?php endforeach; ?>
           </div>
         </div>
-        <div class="col-md-3 col-lg-3" id="offer">
-          <a href="Product.php?value=Regional%20Books"> <img class="img-responsive center-block" src="img/offers/1.png"></a>
-          <a href="Product.php?value=Health%20and%20Cooking"> <img class="img-responsive center-block" src="img/offers/2.png"></a>
-          <a href="Product.php?value=Academic%20and%20Professional"> <img class="img-responsive center-block" src="img/offers/3.png"></a>
-        </div>
+      </div>
+      <div class="col-md-3 col-lg-3" id="offer">
+        <a href="Product.php?value=Regional%20Books"> <img class="img-responsive center-block" src="img/offers/1.png"></a>
+        <a href="Product.php?value=Health%20and%20Cooking"> <img class="img-responsive center-block" src="img/offers/2.png"></a>
+        <a href="Product.php?value=Academic%20and%20Professional"> <img class="img-responsive center-block" src="img/offers/3.png"></a>
       </div>
     </div>
+  </div>
   </div>
 
   <div class="container-fluid text-center" id="new">

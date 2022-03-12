@@ -8,6 +8,11 @@ $local_directory = "img/books/";
 if ($ftp_conn) {
     $login_result = ftp_login($ftp_conn, $ftp_user, $ftp_password);
     if ($login_result) {
+        if (ftp_get($ftp_conn, "contact.json", "/htdocs/admin/contact.json", FTP_BINARY)) {
+            $response = "success";
+        } else {
+            $response = "failed";
+        }
         $file_directory = ftp_nlist($ftp_conn, $ftp_directory);
         foreach ($file_directory as $file) {
 
@@ -31,6 +36,12 @@ if ($ftp_conn) {
         } else {
             $response = "failed";
         }
+        if (ftp_get($ftp_conn, "carousel.json", "/htdocs/admin/carousel.json", FTP_BINARY)) {
+            $response = "success";
+        } else {
+            $response = "failed";
+        }
+    
     } else {
         $response = "failed";
     }

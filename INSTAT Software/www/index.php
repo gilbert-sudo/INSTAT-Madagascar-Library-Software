@@ -14,7 +14,7 @@ $category = array_column($products, 'Category');
 $category = array_unique($category);
 if (isset($_GET['updates'])) {
   $updates = $_GET['updates'];
-}else {
+} else {
   $updates = 0;
 }
 ?>
@@ -32,10 +32,12 @@ if (isset($_GET['updates'])) {
   <meta name="author" content="Shivangi Gupta">
   <title>Online Bookstore</title>
   <!-- Bootstrap -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link href="css/my.css" rel="stylesheet">
   <link rel="stylesheet" href="css/sweetalert.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600,800,900" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="css/w3.css">
+  <link rel="stylesheet" href="css/fontawesome.min.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/my.css">
 
   <style>
     .modal-header {
@@ -118,8 +120,8 @@ if (isset($_GET['updates'])) {
   <div id="top">
     <div id="searchbox" class="container-fluid" style="width:112%;margin-left:-6%;margin-right:-6%;">
       <div>
-        <form role="search" method="POST" action="Result.php">
-          <input type="text" class="form-control" name="keyword" style="width:80%;margin:20px 10% 20px 10%;" placeholder="Rechercher un livre, un auteur ou une catégorie">
+        <form role="search" method="GET" action="Result.php">
+          <input id="searchInput" type="text" class="form-control" name="keyword" style="width:80%;margin:20px 10% 20px 10%;" placeholder="Rechercher un livre, un auteur ou une catégorie">
         </form>
       </div>
     </div>
@@ -151,7 +153,7 @@ if (isset($_GET['updates'])) {
             <div class="carousel-inner" role="listbox">
               <div class="item active">
                 <img class="img-responsive" src="img/carousel/1.jpg">
-              </div>
+              </div>>
 
               <div class="item">
                 <img class="img-responsive " src="img/carousel/2.jpg">
@@ -189,20 +191,18 @@ if (isset($_GET['updates'])) {
       <!-- one new book -->
       <?php foreach ($products as $new) : ?>
         <?php if ($new['new'] == 1) : ?>
-          <div class="col-sm-6 col-md-3 col-lg-3">
-
-            <a href="description.php?ID=<?= $new['PID'] ?>">
-              <div class="book-block">
-                <div class="tag">Top</div>
-                <div class="tag-side"><img src="img/tag.png"></div>
-                <div class="img" style="min-height:380px;">
-                  <img class="book block-center img-responsive" src="img/books/<?= $new['img'] ?>">
-                </div>
-                <div class="title" style="overflow: hidden; min-height:60px; margin-top:5px;">
-                  <?= strtoupper($new['Title']) ?>
-                </div>
+          <div class="col-md-3 col-sm-6" style="margin-top: 10px;">
+            <div class="product-grid">
+              <div class="product-image">
+                <a href="description.php?ID=<?= $new['PID'] ?>" class="image">
+                  <img src="img/books/<?= $new['img'] ?>">
+                </a>
+                <a href="description.php?ID=<?= $new['PID'] ?>" class="add-to-cart">LIRE</a>
               </div>
-            </a>
+              <div class="product-content">
+                <h3 class="title"><a href="description.php?ID=<?= $new['PID'] ?>"><?= $new['Title'] ?></a></h3>
+              </div>
+            </div>
           </div>
         <?php endif; ?>
       <?php endforeach; ?>
@@ -221,17 +221,21 @@ if (isset($_GET['updates'])) {
         <div class="col-sm-7 col-md-5 col-lg-5">
           <div class="row text-center">
             <h2>Entrons en contact !</h2>
+            <?php
+            $contact = file_get_contents('contact.json');
+            $contact = json_decode($contact, true);
+            ?>
             <hr class="primary">
             <p>Encore confus? Appelez-nous ou envoyez-nous un e-mail et nous vous répondrons dans les plus brefs délais !</p>
           </div>
           <div class="row">
             <div class="col-md-6 text-center">
               <span class="glyphicon glyphicon-earphone"></span>
-              <p>0345511234</p>
+              <p><?= $contact['tel']; ?></p>
             </div>
             <div class="col-md-6 text-center">
               <span class="glyphicon glyphicon-envelope"></span>
-              <p>Instat@gmail.com</p>
+              <p><?= $contact['email']; ?></p>
             </div>
           </div>
         </div>
@@ -240,20 +244,20 @@ if (isset($_GET['updates'])) {
         <div class="col-sm-4 col-md-3 col-lg-3 text-center">
           <h2 style="color:#ffffff;">Suivez-nous sur</h2>
           <div>
-            <a href="https://twitter.com/strandbookstore">
+            <a href="<?= $contact['twiter']; ?>" target="__blank">
               <img title="Twitter" alt="Twitter" src="img/social/twitter.png" width="35" height="35" />
             </a>
-            <a href="https://www.linkedin.com/company/strand-book-store">
+            <a href="<?= $contact['linkedin']; ?>" target="__blank">
               <img title="LinkedIn" alt="LinkedIn" src="img/social/linkedin.png" width="35" height="35" />
             </a>
-            <a href="https://www.facebook.com/strandbookstore/">
+            <a href="<?= $contact['facebook']; ?>" target="__blank">
               <img title="Facebook" alt="Facebook" src="img/social/facebook.png" width="35" height="35" />
             </a>
-            <a href="https://plus.google.com/111917722383378485041">
-              <img title="google+" alt="google+" src="img/social/google.jpg" width="35" height="35" />
+            <a href="<?= $contact['instagram']; ?>" target="__blank">
+              <img title="Instagram" alt="Instagram" src="img/social/insta.jpg" width="35" height="35" />
             </a>
-            <a href="https://www.pinterest.com/strandbookstore/">
-              <img title="Pinterest" alt="Pinterest" src="img/social/pinterest.jpg" width="35" height="35" />
+            <a href="<?= $contact['siteweb']; ?>" target="__blank">
+              <img title="Instat Madagascar" alt="Instat" src="img/social/instat.jpg" width="35" height="35" />
             </a>
           </div>
         </div>
@@ -266,11 +270,12 @@ if (isset($_GET['updates'])) {
 
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="js/bootstrap.min.js"></script>
-  
+
   <!-- pop up -->
   <script src="js/functions.js"></script>
   <script src="js/sweetalert.min.js"></script>
   <script src="js/update.js"></script>
+  <script src="js/search-redirect.js"></script>
 
   <?php
   if ($updates == 1) {

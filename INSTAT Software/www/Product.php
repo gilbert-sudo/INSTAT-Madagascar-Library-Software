@@ -27,8 +27,11 @@ $i = 0;
     <meta name="author" content="Shivangi Gupta">
     <title>Online Bookstore</title>
     <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/my.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/w3.css">
+    <link rel="stylesheet" href="css/fontawesome.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/my.css">
 
 </head>
 
@@ -60,8 +63,8 @@ $i = 0;
     <div id="top">
         <div id="searchbox" class="container-fluid" style="width:112%;margin-left:-6%;margin-right:-6%;">
             <div>
-                <form role="search" method="POST" action="Result.php">
-                    <input type="text" class="form-control" name="keyword" style="width:80%;margin:20px 10% 20px 10%;" placeholder="Rechercher un livre, un auteur ou une catégorie">
+                <form role="search" method="GET" action="Result.php">
+                    <input type="text" id="searchInput" class="form-control" name="keyword" style="width:80%;margin:20px 10% 20px 10%;" placeholder="Rechercher un livre, un auteur ou une catégorie">
                 </form>
             </div>
         </div>
@@ -78,21 +81,28 @@ $i = 0;
     <div class="container-fluid text-center" id="new">
         <div class="row">
             <!-- one new book -->
-            <?php foreach ($results as $new) : ?>
-                <div class="col-sm-6 col-md-3 col-lg-3">
-
-                    <a href="description.php?ID=<?= $new['PID'] ?>">
-                        <div class="book-block">
-                            <div class="img" style="min-height:380px;">
-                                <img class="book block-center img-responsive" src="img/books/<?= $new['img'] ?>">
-                            </div>
-                            <div class="title" style="overflow: hidden; min-height:60px; margin-top:5px;">
-                                <?= strtoupper($new['Title']) ?>
-                            </div>
+            <?php
+            $i = 0;
+            foreach ($results as $new) :
+                ++$i; ?>
+                <div class="col-md-3 col-sm-6" style="margin-top: 10px;">
+                    <div class="product-grid">
+                        <div class="product-image">
+                            <a href="description.php?ID=<?= $new['PID'] ?>" class="image">
+                                <img src="img/books/<?= $new['img'] ?>">
+                            </a>
+                            <a href="description.php?ID=<?= $new['PID'] ?>" class="add-to-cart">LIRE</a>
                         </div>
-                    </a>
+                        <div class="product-content">
+                            <h3 class="title"><a href="description.php?ID=<?= $new['PID'] ?>"><?= $new['Title'] ?></a></h3>
+                        </div>
+                    </div>
                 </div>
-            <?php endforeach; ?>
+            <?php
+            if(($i % 4) == 0): 
+            echo "</div>";
+            endif;
+            endforeach; ?>
             <!-- end one book -->
 
         </div>
@@ -109,6 +119,7 @@ $i = 0;
     <script src="js/functions.js"></script>
     <!-- get js functions-->
     <script src="js/update.js"></script>
+    <script src="js/search-redirect.js"></script>
 </body>
 
 </html>

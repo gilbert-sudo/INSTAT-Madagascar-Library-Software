@@ -106,8 +106,8 @@
   <div id="top">
     <div id="searchbox" class="container-fluid" style="width:112%;margin-left:-6%;margin-right:-6%;">
       <div>
-        <form role="search" action="Result.php" method="post">
-          <input type="text" name="keyword" class="form-control" placeholder="Rechercher un livre, un auteur ou une catégorie" style="width:80%;margin:20px 10% 20px 10%;">
+        <form role="search" method="GET" action="Result.php">
+          <input type="text" id="searchInput" class="form-control" name="keyword" style="width:80%;margin:20px 10% 20px 10%;" placeholder="Rechercher un livre, un auteur ou une catégorie">
         </form>
       </div>
     </div>
@@ -121,25 +121,25 @@
     echo "<div class='alert alert-danger' role='alert'>
     <strong>Erreur!</strong> Vous devez être connecté pour télécharger un livre.
   </div>";
-  $error = $_GET['error'];
+    $error = $_GET['error'];
   } else {
     $error = "";
   }
-  if (isset($_GET['success']) && $_GET['success'] == 1) {  
+  if (isset($_GET['success']) && $_GET['success'] == 1) {
     echo "<div class='alert alert-success' role='alert'>";
     echo "<strong>Succès!</strong> Le livre a été ajouté parmi vos favoris.";
     echo "</div>";
-  } 
-  if (isset($_GET['success']) && $_GET['success'] == 2) {  
+  }
+  if (isset($_GET['success']) && $_GET['success'] == 2) {
     echo "<div class='alert alert-success' role='alert'>";
     echo "<strong>Succès!</strong> Le livre a bien été télécharger.";
     echo "</div>";
-  } 
+  }
   $sql = "SELECT * FROM favori WHERE Product = '$PID'";
   $isFavori = $db->prepare($sql);
   $isFavori->execute();
   $isFavori = $isFavori->fetch();
- 
+
   $result = $db->prepare("SELECT * FROM products WHERE PID = '$PID'");
   $result->execute();
   $numRows = 0;
@@ -183,13 +183,13 @@
         <a onclick="NewTab();" id="buyLink" href="read.php?name=<?= $row['pdf'] ?>" target="__BLANK" class="btn btn-lg btn-danger" style="min-width: 100px; padding:15px;color:white;text-decoration:none;">
           Lire<br>
         </a>
-        <?php if(!$isFavori){?>
-        <a id="buyLink" href="add-to-favorite.php?ID=<?= $PID ?>&quantity=1" class="btn btn-lg btn-danger" style="min-width: 100px; padding:15px;color:white;text-decoration:none;">
-          Ajouter aux favoris<br>
-        </a>
+        <?php if (!$isFavori) { ?>
+          <a id="buyLink" href="add-to-favorite.php?ID=<?= $PID ?>&quantity=1" class="btn btn-lg btn-danger" style="min-width: 100px; padding:15px;color:white;text-decoration:none;">
+            Ajouter aux favoris<br>
+          </a>
         <?php } else { ?>
           <a href="cart.php" class="btn btn-lg btn-success" style="min-width: 100px; padding:15px;color:white;text-decoration:none;">
-            Parmi vos favoris  ❤ <br>
+            Parmi vos favoris ❤ <br>
           </a>
         <?php } ?>
 
@@ -276,6 +276,7 @@
   <!-- get js functions-->
   <script src="js/update.js"></script>
   <!-- download the PDF file-->
+  <script src="js/search-redirect.js"></script>
 
 </body>
 

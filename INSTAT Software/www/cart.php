@@ -1,21 +1,19 @@
 <?php
 include "dbconnect.php";
-
+$deleted = false;
 if (isset($_GET['place'])) {
     $query = "DELETE FROM favori";
     $result = $db->prepare($query);
     $result->execute();
-?>
-    <script type="text/javascript">
-        alert("Votre liste a bien été réalisé avec succée!");
-    </script>
-<?php
+    $deleted = true;
 }
+$book_deleted = false;
 if (isset($_GET['remove'])) {
     $product = $_GET['remove'];
     $query = "DELETE FROM favori where Product='$product'";
     $result = $db->prepare($query);
     $result->execute();
+    $book_deleted = true;
 }
 ?>
 <!DOCTYPE html>
@@ -85,8 +83,8 @@ if (isset($_GET['remove'])) {
     <div id="top">
         <div id="searchbox" class="container-fluid" style="width:112%;margin-left:-6%;margin-right:-6%;">
             <div>
-                <form role="search" method="POST" action="Result.php">
-                    <input type="text" class="form-control" name="keyword" style="width:80%;margin:20px 10% 20px 10%;" placeholder="Rechercher un livre, un auteur ou une catégorie">
+                <form role="search" method="GET" action="Result.php">
+                    <input type="text" id="searchInput" class="form-control" name="keyword" style="width:80%;margin:20px 10% 20px 10%;" placeholder="Rechercher un livre, un auteur ou une catégorie">
                 </form>
             </div>
         </div>
@@ -159,7 +157,7 @@ if (isset($_GET['remove'])) {
                 <br> <br>
                 <div class="row">
                     <div class="col-xs-8 col-xs-offset-2  col-sm-4 col-sm-offset-2 col-md-4 col-md-offset-3 col-lg-4 col-lg-offset-3">
-                        <a href="index.php" class="btn btn-lg" style="background:#2f4a5d;color:white;font-weight:800;">Chercher des livres</a>
+                        <a href="Product.php?value=tous les livres" class="btn btn-lg" style="background:#2f4a5d;color:white;font-weight:800;">Chercher des livres</a>
                     </div>
                     <div class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-2 col-md-4 col-md-offset-1 col-lg-4 ">
                         <a href="cart.php?place=true" class="btn btn-lg btn-danger" onclick="return window.confirm('Êtes-vous vraiment sûre de tous éffacer?');">Tous vider 🗑</a>
@@ -169,10 +167,10 @@ if (isset($_GET['remove'])) {
         } else { ?>
                 <div class="row">
                     <div class="col-xs-9 col-xs-offset-3 col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-5">
-                        <a href="index.php" class="btn btn-lg" style="background:#2f4a5d;color:white;font-weight:800;">Chercher des livres</a>
+                        <a href="Product.php?value=tous les livres" class="btn btn-lg" style="background:#2f4a5d;color:white;font-weight:800;">Chercher des livres</a>
                     </div>
                 </div>'
-            <?php } ?> 
+            <?php } ?>
 
                 </div>
                 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -183,5 +181,29 @@ if (isset($_GET['remove'])) {
                 <script src="js/functions.js"></script>
                 <!-- get js functions-->
                 <script src="js/update.js"></script>
+                <script src="js/search-redirect.js"></script>
+                <script src="js/sweetalert.min.js"></script>
+                <?php
+                if ($deleted == true) {
+                    echo '<script>
+                    swal({
+                        title: "Liste vidée",
+                        text: "Le livre ont tous été supprimé de votre liste de favoris",
+                        icon: "success",
+                        button: "OK",
+                    });
+                    </script>';
+                }
+                if ($book_deleted == true) {
+                    echo '<script>
+                    swal({
+                        title: "Livre enlevé",
+                        text: "Le livre à bien été enlevé de votre liste de favoris",
+                        icon: "success",
+                        button: "OK",
+                    });
+                    </script>';
+                }
+                ?>
 </body>
 <html>

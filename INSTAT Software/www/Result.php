@@ -1,5 +1,6 @@
 <?php
 session_start();
+$keyword = $_GET['keyword'];
 ?>
 
 
@@ -7,32 +8,13 @@ session_start();
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/w3.css">
-<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="css/fontawesome.min.css">
 <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
-<link rel="stylesheet" href="css/my.css" type="text/css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/my.css">
 
 <body>
-    <style>
-        #books .row {
-            margin-top: 30px;
-            font-weight: 800;
-        }
 
-        @media only screen and (max-width: 760px) {
-            #books .row {
-                margin-top: 10px;
-            }
-        }
-
-        .book-block {
-            margin-top: 20px;
-            margin-bottom: 10px;
-            padding: 10px 10px 10px 10px;
-            border: 1px solid #DEEAEE;
-            border-radius: 10px;
-            height: 100%;
-        }
-    </style>
 
     </head>
 
@@ -62,55 +44,32 @@ session_start();
         <div id="top">
             <div id="searchbox" class="container-fluid" style="width:112%;margin-left:-6%;margin-right:-6%;">
                 <div>
-                    <form role="search" method="POST" action="Result.php">
-                        <input type="text" class="form-control" name="keyword" style="width:80%;margin:20px 10% 20px 10%;" placeholder="Search for a Book , Author Or Category">
+                    <form role="search" method="GET" action="Result.php">
+                        <input type="text" id="searchInput" class="form-control" name="keyword" style="width:80%;margin:20px 10% 20px 10%;" placeholder="Rechercher un livre, un auteur ou une catégorie">
                     </form>
                 </div>
             </div>
-            <?php
-            include "dbconnect.php";
-            $keyword = $_POST['keyword'];
+        </div>
+        <div class="container-fluid" id="books">
+            <div class="row">
+                <div class="col-xs-12 text-center" id="heading" style="margin-top: 10px;">
+                    <h4 style="color:#00B9F5;text-transform:uppercase;"> Les livres corréspondent </h4>
+                </div>
+            </div>
+            <div class="row">
+                <div id="matchList"></div>
+            </div>
+        </div>
+        
 
-            $query = "SELECT * FROM products  where PID like '%{$keyword}%' OR Title like '%{$keyword}%' OR Author like '%{$keyword}%' OR Category like '%{$keyword}%'";
-            $result = $db->prepare($query);
-            $result->execute();
-            $result = $result->fetchAll();
-            $i = 0;
-            echo '<div class="container-fluid" id="books">
-                <div class="row">
-                  <div class="col-xs-12 text-center" id="heading">
-                         <h4 style="color:#00B9F5;text-transform:uppercase;"> ' . 1 . ' livres corréspondent </h4>
-                   </div>
-                </div>';
-
-            foreach ($result as $row) {
-                $path = "img/books/".$row['img'];
-                $description = "description.php?ID=" . $row["PID"];
-                if ($i % 3 == 0)  $offset = 0;
-                else  $offset = 1;
-                if ($i % 3 == 0)
-                echo '<div class="row">
-                       <a href="' . $description . '">
-                        <div class="col-sm-5 col-sm-offset-1 col-md-3 col-md-offset-' . $offset . ' col-lg-3 text-center w3-card-8 w3-dark-grey">
-                            <div class="book-block">
-                                <img class="book block-center img-responsive" src="' . $path . '">
-                                <hr>
-                                 ' . $row["Title"] . '<br>
-                            </div>
-                        </div>
-                        
-                       </a> ';
-                $i++;
-                if ($i % 3 == 0)
-                    echo '</div>';
-            }
-
-            ?>
-
-            <!-- get js functions-->
-            <script src="js/functions.js"></script>
-            <!-- get js functions-->
-            <script src="js/update.js"></script>
+        <!-- get js functions-->
+        <script src="js/functions.js"></script>
+        <script>
+            _id("searchInput").focus();
+        </script>
+        <!-- get js functions-->
+        <script src="js/update.js"></script>
+        <script src="js/search-app.js"></script>
     </body>
 
 </html>
